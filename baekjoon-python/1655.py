@@ -1,26 +1,22 @@
-from bisect import bisect_left
+import sys
+import heapq
 
 
 def run():
-    size = int(input())
-    arr = list()
-
-    for _ in range(size):
-        num = int(input())
-        arr_length = len(arr)
-        pointer = bisect_left(arr, num)
-        arr.insert(pointer, num)
-        arr_length += 1
-
-        if arr_length % 2 == 1:
-            index = arr_length // 2 + 1
+    minheap, maxheap = list(), list()
+    num = int(sys.stdin.readline())
+    for _ in range(num):
+        cur = int(sys.stdin.readline())
+        if len(maxheap) == len(minheap):
+            heapq.heappush(maxheap, -cur)
         else:
-            if arr_length / 2 < (arr_length / 2) + 1:
-                index = arr_length // 2
-            else:
-                index = arr_length // 2 + 1
-        index = index - 1
-        print(arr[index])
+            heapq.heappush(minheap, cur)
+        if minheap and -maxheap[0] > minheap[0]:
+            tmp1 = -heapq.heappop(maxheap)
+            tmp2 = heapq.heappop(minheap)
+            heapq.heappush(maxheap, -tmp2)
+            heapq.heappush(minheap, tmp1)
+        print(-maxheap[0])
 
 
 if __name__ == '__main__':
