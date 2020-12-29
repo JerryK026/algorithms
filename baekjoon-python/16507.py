@@ -2,25 +2,37 @@ import sys
 
 
 def run():
-    row_size, column_size, target = sys.stdin.readline().split()
-    arr = list()
-    tar = list()
-    row_size = int(row_size)
-    target = int(target)
+    inp = sys.stdin.readline().split()
+    row_size, column_size, target = [int(x) for x in inp]
 
+    # src 만들기
+    src = list()
     for _ in range(row_size):
         token = sys.stdin.readline().split()
-        arr.append([int(x) for x in token])
+        src.append([int(i) for i in token])
+
+    # integral image (prefix sum)
+    integral = [[0 for col in range(column_size)] for row in range(row_size)]
+
+    for r in range(row_size):
+        sum_tmp = 0
+        for c in range(column_size):
+            sum_tmp += src[r][c]
+            integral[r][c] = integral[r-1][c] + sum_tmp
 
     for _ in range(target):
-        target_token = sys.stdin.readline().split()
-        tar = [int(x) - 1 for x in target_token]
-        sum_list = 0
-
-        for i in range(tar[0], tar[2]+1):
-            sum_list += sum(arr[i][tar[1]:tar[3] + 1])
-
-        print(sum_list // ((tar[2] - tar[0] + 1) * (tar[3] - tar[1] + 1)))
+        tar = sys.stdin.readline().split()
+        # 1,1부터 세므로 1을 빼서 넣는다.
+        r1, c1, r2, c2 = [int(x) - 1 for x in tar]
+        A, B, C, D = integral[r1-1][c1-1], integral[r1-1][c2], integral[r2][c1-1], integral[r2][c2]
+        if r1 == 0:
+            A, B = 0, 0
+        if c1 == 0:
+            A, C = 0, 0
+        val_sum = A + D - B - C
+        val_num = (r2 - r1 + 1) * (c2 - c1 + 1)
+        output = val_sum // val_num
+        print(output)
 
 
 if __name__ == '__main__':
