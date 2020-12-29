@@ -1,15 +1,19 @@
+import sys
+
+
 def run():
-    inform = input().split()
-    row_size, column_size, target = inform[:]
+    row_size, column_size, target = sys.stdin.readline().split()
     arr = list()
     tar = list()
+    row_size = int(row_size)
+    target = int(target)
 
-    for _ in range(int(row_size)):
-        token = input().split()
+    for _ in range(row_size):
+        token = sys.stdin.readline().split()
         arr.append([int(x) for x in token])
 
-    for _ in range(int(target)):
-        target_token = input().split()
+    for _ in range(target):
+        target_token = sys.stdin.readline().split()
         tar = [int(x) - 1 for x in target_token]
         sum_list = 0
 
