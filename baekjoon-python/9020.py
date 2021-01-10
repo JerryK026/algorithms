@@ -1,23 +1,24 @@
 import sys
 import bisect
 
-
 def run():
     era = eratos(10000)
     for _ in range(int(sys.stdin.readline())):
         num = int(sys.stdin.readline())
-        # 현재 입력된 짝수보다 작은 최대의 소수.
-        bp = bisect.bisect_left(era, num)
-        result = list()
 
-        for i in range(bp):
-            for j in range(bp, i - 1, -1):
+        # 어차피 입력되는 건 짝수인데, 짝수는 2개의 홀수로 나뉘어질 수 있다. 그 홀수는 최대의 소수가 될 수 있을 것.
+        # bp는 반으로 나눴을 때 그것보다 작은 가장 큰 소수(최대 딱 절반)의 index. b2는 num보다 작은 가장 큰 소수
+        bp = bisect.bisect_right(era, num // 2) - 1
+        bp2 = bisect.bisect_right(era, num) - 1
+        check = False
+        for i in range(bp, -1, -1):
+            for j in range(bp, bp2, 1):
                 if era[i] + era[j] == num:
-                    result = [era[i], era[j]]
+                    print(era[i], era[j], sep=" ")
+                    check = True
                     break
-        a, b = result
-        print(a, b)
-
+            if check:
+                break
 
 
 def eratos(num):
