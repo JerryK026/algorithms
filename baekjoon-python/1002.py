@@ -1,21 +1,18 @@
 import sys
+import math
 
 
 def turret():
     x1, y1, r1, x2, y2, r2 = map(int, sys.stdin.readline().split())
-    d = ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5
+    d = math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
     if d == 0 and r1 == r2:
         return -1
-    elif r1 + r2 > d:
-        if d < r1 or d < r2:
-            return 0
-        elif d == r2 - r1 or d == r1 - r2:
-            return 1
-        return 2
-    elif r1 + r2 == d:
+    elif r1 + r2 == d or abs(r1 - r2) == d:
         return 1
-    else:
+    elif r1 + r2 < d or d + min([r1, r2]) < max([r1, r2]):
         return 0
+    else:
+        return 2
 
 
 def run():
